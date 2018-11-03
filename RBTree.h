@@ -3,17 +3,29 @@
 #include <iostream>
 using namespace std;
 
+enum color_t {red,black};
 class RBTree{
 private:
-struct TreeNode {
+struct Treenode {
 int key;
-//enum color_t color; causes error because type isnt defined work on it later
-TreeNode* left;
-TreeNode* right;
-TreeNode* parent;
+enum color_t color; 
+Treenode* left;
+Treenode* right;
+Treenode* parent;
 };
-TreeNode* root;
+Treenode* root;
 public:
 /* Fill in with methods */
+RBTree(){root=NULL;}
+void insert(Treenode*,Treenode*);
+void inorder(Treenode*);
+void search();
+void minimum();
+void maximum();
+void remove();
+void print();
+void rotateleft(Treenode*, Treenode*);
+void rotateright(Treenode*,Treenode*);
+void fix(Treenode*,Treenode*);
 };
 #endif
