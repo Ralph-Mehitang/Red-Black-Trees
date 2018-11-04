@@ -17,7 +17,7 @@ Treenode* root;
 public:
 /* Fill in with methods */
 RBTree(){root=NULL;}
-void insert(Treenode*,Treenode*);
+Treenode* insert(Treenode*,Treenode*);
 void inorder(Treenode*);
 void search();
 void minimum();
@@ -26,6 +26,6 @@ void remove();
 void print();
 void rotateleft(Treenode*, Treenode*);
 void rotateright(Treenode*,Treenode*);
-void fix(Treenode*,Treenode*);
+void insert_fix(Treenode*,Treenode*);
 };
 #endif
