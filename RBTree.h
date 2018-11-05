@@ -13,10 +13,12 @@ Treenode* left;
 Treenode* right;
 Treenode* parent;
 };
-Treenode* root;
+
+static Treenode* const nil;
+Treenode* root=nullptr;
 public:
 /* Fill in with methods */
-RBTree(){root=NULL;}
+RBTree(){root=nil;}
 Treenode* insert(Treenode*,Treenode*);
 void inorder(Treenode*);
 void search();
@@ -27,5 +29,6 @@ void print();
 void rotateleft(Treenode*, Treenode*);
 void rotateright(Treenode*,Treenode*);
 void insert_fix(Treenode*,Treenode*);
+void swap(Treenode*, Treenode*);
 };
 #endif

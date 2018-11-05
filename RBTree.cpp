@@ -4,9 +4,17 @@
 
 using namespace std;
 
+void RBTree:: swap (Treenode* one, Treenode* two){
+
+	Treenode* temp;
+	temp=one;
+	one=two;
+	two=temp;
+}
+
 RBTree:: Treenode* RBTree:: insert(Treenode *root, Treenode* node){
 //if the tree is empty, return a new node
-	if (root==NULL){
+	if (root==nil){
 		exit(-1);
 	}
 
@@ -99,7 +107,7 @@ left_ptr->right=node;
 node->parent=left_ptr;
 }
 
-void ::RBTree:: insertfix(Treenode* root, Treenode* node){
+void ::RBTree:: insert_fix(Treenode* root, Treenode* node){
 
 	Treenode* parent_ptr=NULL;
 	Treenode* grandparent_ptr= NULL;
@@ -108,6 +116,34 @@ void ::RBTree:: insertfix(Treenode* root, Treenode* node){
 	{
 		parent_ptr=node->parent;
 		grandparent_ptr=node->parent->parent;
+		//case when the parent of node is the left child of the grandparent
+		if(parent_ptr==grandparent_ptr->left){
+			Treenode *uncle_ptr=grandparent_ptr->right;
+
+			if(uncle_ptr!=nil && uncle_ptr->color==red){
+				grandparent_ptr->color=red;
+				parent_ptr->color=black;
+				uncle_ptr->color=black;
+				node=grandparent_ptr;
+			}
+		}
+
+		else{
+			//node is the right child of its parent
+			if(node==parent_ptr->right){
+				rotateleft(root,parent_ptr);
+				node=parent_ptr;
+				parent_ptr=node->parent;
+			}
+			//node is the left child of its parent 
+			rotateright(root,grandparent_ptr);
+			swap(parent_ptr->color,grandparent_ptr->color);
+			node=parent_ptr;
+
+		}
+
 		
 	}
 }
+
+RBTree::Treenode* const RBTree::nil=new Treenode({0,black, nullptr,nullptr,nullptr});
