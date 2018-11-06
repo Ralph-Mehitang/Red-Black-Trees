@@ -21,9 +21,9 @@ public:
 RBTree(){root=nil;}
 Treenode* insert(Treenode*,Treenode*);
 void inorder(Treenode*);
-void search();
-void minimum();
-void maximum();
+Treenode* search(Treenode*, int key);
+Treenode* minimum(Treenode*);
+Treenode* maximum(Treenode*);
 void remove();
 void print();
 void rotateleft(Treenode*, Treenode*);

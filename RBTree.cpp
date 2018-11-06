@@ -4,6 +4,9 @@
 
 using namespace std;
 
+
+RBTree::Treenode* const RBTree::nil=new Treenode({0,black, nullptr,nullptr,nullptr});
+
 void RBTree:: swap (Treenode* one, Treenode* two){
 
 	Treenode* temp;
@@ -39,19 +42,43 @@ inorder(root->left);
 cout<<root->key;
 inorder(root->right);
 }
+RBTree:: Treenode* RBTree:: search(Treenode* node, int key){
+if(node!=NULL){
 
-void RBTree:: search(){
-
+	if(key<node->key){
+	return search(node->left,key);
+}
+	if(key>node->key){
+	return search(node->right,key);
+}
+}
+	else 
+	return search(node->right, key);
 
 }
 
-void RBTree:: minimum(){
 
+
+RBTree:: Treenode* RBTree:: minimum(Treenode* node){
+	Treenode *tmp=node;
+	//finding the left most leaf
+	while(tmp->left!=NULL){
+		tmp=tmp->left;
+	}
+	return tmp;
 
 }
 
-void RBTree:: maximum(){
+RBTree:: Treenode* RBTree:: maximum(Treenode* node){
 
+if(node==NULL){
+	return NULL;
+}
+else if(node->right==NULL){
+	return node;
+}
+else 
+return maximum(node->right);
 }
 
 void RBTree:: remove(){
@@ -101,16 +128,19 @@ if (node->parent == NULL){
 else if(node==node->parent->left){
 	node->parent->left= left_ptr;
 }
-else
+else{
 	node->parent->right=left_ptr;
 left_ptr->right=node;
 node->parent=left_ptr;
+}
+
 }
 
 void ::RBTree:: insert_fix(Treenode* root, Treenode* node){
 
 	Treenode* parent_ptr=NULL;
 	Treenode* grandparent_ptr= NULL;
+	Treenode *uncle_ptr=NULL;
 
 	while((node!=root) && (node->color!=black) && (node->parent->color==red))
 	{
@@ -118,7 +148,7 @@ void ::RBTree:: insert_fix(Treenode* root, Treenode* node){
 		grandparent_ptr=node->parent->parent;
 		//case when the parent of node is the left child of the grandparent
 		if(parent_ptr==grandparent_ptr->left){
-			Treenode *uncle_ptr=grandparent_ptr->right;
+			uncle_ptr=grandparent_ptr->right;
 
 			if(uncle_ptr!=nil && uncle_ptr->color==red){
 				grandparent_ptr->color=red;
@@ -140,10 +170,38 @@ void ::RBTree:: insert_fix(Treenode* root, Treenode* node){
 			swap(parent_ptr->color,grandparent_ptr->color);
 			node=parent_ptr;
 
+			else {
+				//when the uncle of parent is red you need to recolor
+				uncle_ptr=grandparent_ptr->left;
+
+				if ((uncle_ptr != NULL) && uncle_ptr->color==red)
+				{
+					grandparent_ptr->color=red;
+					parent_ptr->color=black;
+					uncle_ptr->color=black;
+					node=grandparent_ptr;
+				}
+
+			}
+
+			else{
+				//node is the left child of the parent
+
+				if (node==parent_ptr->left)
+				{
+					rotateright(root,parent_ptr);
+					node=parent_ptr;
+					parent_ptr=node->parent;
+				}
+				rotateleft(root,grandparent_ptr);
+				swap(parent_ptr->color, grandparent_ptr->color);
+				node=parent_ptr;
+			}
+
 		}
 
-		
-	}
-}
 
-RBTree::Treenode* const RBTree::nil=new Treenode({0,black, nullptr,nullptr,nullptr});
+	}
+
+	root->color=black;
+}
