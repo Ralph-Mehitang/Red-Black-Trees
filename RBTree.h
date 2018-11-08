@@ -19,16 +19,27 @@ Treenode* root=nullptr;
 public:
 /* Fill in with methods */
 RBTree(){root=nil;}
-Treenode* insert(Treenode*,Treenode*);
-void inorder(Treenode*);
-Treenode* search(Treenode*, int key);
-Treenode* minimum(Treenode*);
-Treenode* maximum(Treenode*);
-void remove();
+~RBTree(){
+	while(root!=NULL){
+		delete root;
+	}
+}
+void insert(int);
+void inorderhelper(Treenode*);
+void inorder();
+void search(int);
+Treenode* searchhelper(Treenode*, int key);
+int minimum();
+int minimumhelper(Treenode*);
+int maximum();
+int maximumhelper(Treenode*);
+void remove(Treenode*);
+int succesor();
+int succesorhelper(Treenode*);
 void print();
 void rotateleft(Treenode*, Treenode*);
 void rotateright(Treenode*,Treenode*);
-void insert_fix(Treenode*,Treenode*);
+void insert_fix(Treenode*);
 void swap(Treenode*, Treenode*);
 };
 #endif

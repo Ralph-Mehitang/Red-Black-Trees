@@ -15,80 +15,192 @@ void RBTree:: swap (Treenode* one, Treenode* two){
 	two=temp;
 }
 
-RBTree:: Treenode* RBTree:: insert(Treenode *root, Treenode* node){
+//insert function
+void RBTree:: insert(int k){
 //if the tree is empty, return a new node
-	if (root==nil){
-		exit(-1);
-	}
-
-	if(node->key<root->key){
-		root->left=insert(root->left,node);
-		root->left->parent=root;	
-	}
-	else if (node->key>root->key){
-		root->right=insert(root->right,node);
-		root->right->parent=root;
-	}
-	return root;
+    Treenode* node = new Treenode;
+    node->key = k;
+    node->parent = nil;
+    if(root==nil) {
+        root = node;
+        node->parent = nil;
+    } else {
+        Treenode* x = nil;
+        Treenode* y = root;
+        while(y != nil)
+        {
+            x = y;
+            if (k < y->key) {
+                y = y->left;
+            } else {
+                y = y->right;
+            }
+        }
+        if (k < x->key) {
+            x->left = node;
+        } else {
+            x->right = node;
+        }
+        node->parent = y;
+    }
+    node->color = red;
+    node->left = nil;
+    node->right = nil;
+    insert_fix(node);
 }
-// inodertraversal recursive function	
-void RBTree:: inorder(Treenode *root){
 
-if(root==NULL){
+void ::RBTree:: insert_fix(Treenode* node){
+
+	Treenode* parent_ptr=NULL;
+	Treenode* grandparent_ptr= NULL;
+	Treenode *uncle_ptr=NULL;
+
+	while(node->parent->color==red)
+	{
+		parent_ptr=node->parent;
+		grandparent_ptr=node->parent->parent;
+		//case when the parent of node is the left child of the grandparent
+		if(parent_ptr==grandparent_ptr->left){
+			uncle_ptr=grandparent_ptr->right;
+
+			if(uncle_ptr->color==red){
+				grandparent_ptr->color=red;
+				parent_ptr->color=black;
+				uncle_ptr->color=black;
+				node=grandparent_ptr;
+			}
+		
+
+		else{
+			//node is the right child of its parent
+			if(node==parent_ptr->right){
+				rotateleft(root,parent_ptr);
+				node=parent_ptr;
+				parent_ptr=node->parent;
+			}
+			//node is the left child of its parent 
+			rotateright(root,grandparent_ptr);
+			node=parent_ptr;
+	}
+}
+			else {
+				//when the uncle of parent is red you need to recolor
+				uncle_ptr=grandparent_ptr->left;
+
+				if ((uncle_ptr != NULL) && (uncle_ptr->color==red))
+				{
+					grandparent_ptr->color=red;
+					parent_ptr->color=black;
+					uncle_ptr->color=black;
+					node=grandparent_ptr;
+				}
+
+			else{
+				//node is the left child of the parent
+
+				if (node==parent_ptr->left)
+				{
+					rotateright(root,parent_ptr);
+					node=parent_ptr;
+					parent_ptr=node->parent;
+				}
+				rotateleft(root,grandparent_ptr);
+				//swap(parent_ptr->color, grandparent_ptr->color);
+				node=parent_ptr;
+			}
+
+		}
+
+
+	}
+
+	root->color=black;
+}
+
+// inodertraversal recursive function	
+void RBTree:: inorderhelper(Treenode *root){
+
+if(root==nil){
 	return;
 }
 
-inorder(root->left);
-cout<<root->key;
-inorder(root->right);
-}
-RBTree:: Treenode* RBTree:: search(Treenode* node, int key){
-if(node!=NULL){
-
-	if(key<node->key){
-	return search(node->left,key);
-}
-	if(key>node->key){
-	return search(node->right,key);
-}
-}
-	else 
-	return search(node->right, key);
-
+inorderhelper(root->left);
+cout<<root->key<<" ";
+inorderhelper(root->right);
 }
 
-
-
-RBTree:: Treenode* RBTree:: minimum(Treenode* node){
-	Treenode *tmp=node;
-	//finding the left most leaf
-	while(tmp->left!=NULL){
-		tmp=tmp->left;
-	}
-	return tmp;
-
+void RBTree:: inorder(){
+	inorderhelper(root);
 }
-
-RBTree:: Treenode* RBTree:: maximum(Treenode* node){
-
-if(node==NULL){
-	return NULL;
-}
-else if(node->right==NULL){
+/*
+Treenode* RBTree:: searchhelper(Treenode* node, int key){
+//base case
+	if(node==NULL||node->key==key){
 	return node;
 }
-else 
-return maximum(node->right);
+//key is greater than roots key
+	if(node->key<key){
+	return search(node->right,key);
+}
+//key is smaller than the roots key
+return search(root->left,key)
+
+//when the key is smaller than node key
+	else 
+	return search(node->left, key);
+
+}
+void search(int key){
+	searchhelper(root,key);
+}
+*/
+int RBTree::minimum(){
+	minimumhelper(root);
 }
 
-void RBTree:: remove(){
+int RBTree:: minimumhelper(Treenode* node){
+	if(node!=nil)
+	{
+	while(node->left!=nil){
+		node=node->left;
+	}
+
+}
+	return node->key;
 
 }
 
-void RBTree:: print(){
+int RBTree::maximum(){
 
+	maximumhelper(root);
 }
 
+int RBTree:: maximumhelper(Treenode* node){
+
+if(node!=nil){
+while(node->right!=nil)
+{
+	node=node->right;
+}
+
+return node->key;
+}
+}
+
+int RBTree::succesor(){
+	succesorhelper(root);
+}
+
+int RBTree:: succesorhelper(Treenode* node){
+	return minimumhelper(node->right);
+}
+/*
+void RBTree:: remove(Treenode* node){
+	Treenode* prevnode=node;
+	Treenode* newnode=node;
+	if()
+}
+*/
 void RBTree:: rotateleft(Treenode* root, Treenode* node){
 
 Treenode* right_ptr=node->right;
@@ -134,74 +246,4 @@ left_ptr->right=node;
 node->parent=left_ptr;
 }
 
-}
-
-void ::RBTree:: insert_fix(Treenode* root, Treenode* node){
-
-	Treenode* parent_ptr=NULL;
-	Treenode* grandparent_ptr= NULL;
-	Treenode *uncle_ptr=NULL;
-
-	while((node!=root) && (node->color!=black) && (node->parent->color==red))
-	{
-		parent_ptr=node->parent;
-		grandparent_ptr=node->parent->parent;
-		//case when the parent of node is the left child of the grandparent
-		if(parent_ptr==grandparent_ptr->left){
-			uncle_ptr=grandparent_ptr->right;
-
-			if(uncle_ptr!=nil && uncle_ptr->color==red){
-				grandparent_ptr->color=red;
-				parent_ptr->color=black;
-				uncle_ptr->color=black;
-				node=grandparent_ptr;
-			}
-		}
-
-		else{
-			//node is the right child of its parent
-			if(node==parent_ptr->right){
-				rotateleft(root,parent_ptr);
-				node=parent_ptr;
-				parent_ptr=node->parent;
-			}
-			//node is the left child of its parent 
-			rotateright(root,grandparent_ptr);
-			swap(parent_ptr->color,grandparent_ptr->color);
-			node=parent_ptr;
-
-			else {
-				//when the uncle of parent is red you need to recolor
-				uncle_ptr=grandparent_ptr->left;
-
-				if ((uncle_ptr != NULL) && uncle_ptr->color==red)
-				{
-					grandparent_ptr->color=red;
-					parent_ptr->color=black;
-					uncle_ptr->color=black;
-					node=grandparent_ptr;
-				}
-
-			}
-
-			else{
-				//node is the left child of the parent
-
-				if (node==parent_ptr->left)
-				{
-					rotateright(root,parent_ptr);
-					node=parent_ptr;
-					parent_ptr=node->parent;
-				}
-				rotateleft(root,grandparent_ptr);
-				swap(parent_ptr->color, grandparent_ptr->color);
-				node=parent_ptr;
-			}
-
-		}
-
-
-	}
-
-	root->color=black;
 }
