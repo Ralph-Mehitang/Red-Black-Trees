@@ -132,28 +132,23 @@ inorderhelper(root->right);
 void RBTree:: inorder(){
 	inorderhelper(root);
 }
-/*
-Treenode* RBTree:: searchhelper(Treenode* node, int key){
+
+RBTree ::Treenode* RBTree:: searchhelper(Treenode* node, int key){
 //base case
-	if(node==NULL||node->key==key){
+	if(node==nil||node->key==key){
 	return node;
 }
 //key is greater than roots key
-	if(node->key<key){
-	return search(node->right,key);
+	else if(node->key<key){
+	return searchhelper(node->right,key);
 }
 //key is smaller than the roots key
-return search(root->left,key)
-
-//when the key is smaller than node key
-	else 
-	return search(node->left, key);
+return searchhelper(node->left,key);
 
 }
-void search(int key){
+void RBTree:: search(int key){
 	searchhelper(root,key);
 }
-*/
 int RBTree::minimum(){
 	minimumhelper(root);
 }
@@ -187,12 +182,46 @@ return node->key;
 }
 }
 
-int RBTree::succesor(){
-	succesorhelper(root);
+void RBTree:: transplant(Treenode* nance, Treenode *node){
+	if (nance->parent==nil){
+		root=node;
+	}
+	else if(nance==nance->parent->left){
+	nance ->parent->left=node;
+	}
+	else {
+		nance->parent->right=node;
+	}
+	node->parent=nance->parent;
+}
+int RBTree::succesor(Treenode* node){
+	succesorhelper(node);
 }
 
-int RBTree:: succesorhelper(Treenode* node){
-	return minimumhelper(node->right);
+
+ RBTree:: Treenode* succesorhelper(Treenode *node){
+		if(node==nil){
+			node= new Treenode;
+			node->key=0;
+			node->left=nil;
+			node->right=nil;
+			node->parent=nil;
+			node->color=black;
+		}
+	else if( node->right!=nil){
+		return minimumhelper(node->right);
+	}
+	else if (node==this->maximumhelper(root)){
+		return node;
+	}
+
+	else if (node=node->parent->right){
+		return node->parent;
+	}
+	return nil;
+	cout <<"test debug "<<endl;
+
+	//causes memory leakage go back and see why
 }
 /*
 void RBTree:: remove(Treenode* node){

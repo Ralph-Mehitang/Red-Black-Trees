@@ -34,12 +34,13 @@ int minimumhelper(Treenode*);
 int maximum();
 int maximumhelper(Treenode*);
 void remove(Treenode*);
-int succesor();
-int succesorhelper(Treenode*);
+int succesor(Treenode*);
+Treenode* succesorhelper(Treenode*);
 void print();
 void rotateleft(Treenode*, Treenode*);
 void rotateright(Treenode*,Treenode*);
 void insert_fix(Treenode*);
+void transplant(Treenode*, Treenode*);
 void swap(Treenode*, Treenode*);
 };
 #endif

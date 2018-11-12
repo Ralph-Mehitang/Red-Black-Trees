@@ -65,12 +65,14 @@ RBTree tree;
         		cout<<endl;
         break;
         case 7:
-        exit(1);
-        case 8:
-            cout<<"Enter search value:"<<endl;
+        cout<<"Enter search value:"<<endl;
             cin>>value;
-           // tree.search(value); //was leaking a lot decided to take out
+             tree.search(value); //was leaking a lot decided to take out
             cout<<endl;
+            break;
+        case 8:
+         cout<<"Exiting program menu"<<endl;
+         exit(-1);
             break;
         default:
             cout<<"Wrong choice"<<endl;
