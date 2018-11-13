@@ -117,6 +117,22 @@ void ::RBTree:: insert_fix(Treenode* node){
 	root->color=black;
 }
 
+void RBTree:: remove(int val){
+	Treenode* node= new Treenode;
+	node= searchhelper(root,val); // sets node to the value that has been inputed
+	if(node==nil){
+		cout<<"the value you want deleted does not exist"<<endl;
+		return;
+	}
+	
+		//remove(node);
+}
+
+void RBTree:: removehelper(Treenode* node){
+	color_t col;
+	Treenode* childnode;
+}
+
 // inodertraversal recursive function	
 void RBTree:: inorderhelper(Treenode *root){
 
@@ -139,12 +155,13 @@ RBTree ::Treenode* RBTree:: searchhelper(Treenode* node, int key){
 	return node;
 }
 //key is greater than roots key
-	else if(node->key<key){
+	else if(key>node->key){
 	return searchhelper(node->right,key);
 }
+else{
 //key is smaller than the roots key
 return searchhelper(node->left,key);
-
+}
 }
 void RBTree:: search(int key){
 	searchhelper(root,key);
@@ -194,42 +211,27 @@ void RBTree:: transplant(Treenode* nance, Treenode *node){
 	}
 	node->parent=nance->parent;
 }
-int RBTree::succesor(Treenode* node){
+int RBTree::succesor(){
+	Treenode* node;
 	succesorhelper(node);
 }
 
 
- RBTree:: Treenode* succesorhelper(Treenode *node){
-		if(node==nil){
-			node= new Treenode;
-			node->key=0;
-			node->left=nil;
-			node->right=nil;
-			node->parent=nil;
-			node->color=black;
-		}
-	else if( node->right!=nil){
+int RBTree:: succesorhelper(Treenode *node){
+	cout<<"debug"<<endl;
+ 	if(node->right!=nil){
 		return minimumhelper(node->right);
 	}
-	else if (node==this->maximumhelper(root)){
-		return node;
+	cout<<"debug two"<<endl;
+	Treenode* tmp =new Treenode;
+	while(tmp!=nil && node==tmp->right){
+		node=tmp;
+		cout<<"debug three"<<endl;
+		tmp=tmp->parent;
 	}
 
-	else if (node=node->parent->right){
-		return node->parent;
-	}
-	return nil;
-	cout <<"test debug "<<endl;
-
-	//causes memory leakage go back and see why
+	return tmp->key;
 }
-/*
-void RBTree:: remove(Treenode* node){
-	Treenode* prevnode=node;
-	Treenode* newnode=node;
-	if()
-}
-*/
 void RBTree:: rotateleft(Treenode* root, Treenode* node){
 
 Treenode* right_ptr=node->right;
