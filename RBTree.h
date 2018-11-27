@@ -1,6 +1,9 @@
 #ifndef RBTREE_H
 #define RBTREE_H
 #include <iostream>
+// Ralph Mehitang
+// cosc 320
+// Professor Joseph Anderson
 using namespace std;
 
 enum color_t {red,black};
