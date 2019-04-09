@@ -11,7 +11,7 @@ class RBTree{
 private:
 struct Treenode {
 int key;
-enum color_t color; 
+enum color_t color;
 Treenode* left;
 Treenode* right;
 Treenode* parent;
@@ -38,7 +38,7 @@ int maximum();
 int maximumhelper(Treenode*);
 void remove(Treenode*);
 int succesor();
-int succesorhelper(Treenode*);
+int succesorhelper(Treenode*, Treenode*);
 void print();
 void remove(int);
 void removehelper(Treenode*);

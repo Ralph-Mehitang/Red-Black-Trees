@@ -42,7 +42,7 @@ RBTree tree;
             //test.remove(tmp,tmp->key);
             break;
             */
-    
+
 		case 2:
             cout<<"Minimum Value of BST: "<<tree.minimum()<<endl;
             cout<<endl;

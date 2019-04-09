@@ -69,7 +69,7 @@ void ::RBTree:: insert_fix(Treenode* node){
 				uncle_ptr->color=black;
 				node=grandparent_ptr;
 			}
-		
+
 
 		else{
 			//node is the right child of its parent
@@ -78,7 +78,7 @@ void ::RBTree:: insert_fix(Treenode* node){
 				node=parent_ptr;
 				parent_ptr=node->parent;
 			}
-			//node is the left child of its parent 
+			//node is the left child of its parent
 			rotateright(root,grandparent_ptr);
 			node=parent_ptr;
 	}
@@ -124,7 +124,7 @@ void RBTree:: remove(int val){
 		cout<<"the value you want deleted does not exist"<<endl;
 		return;
 	}
-	
+
 		//remove(node);
 }
 
@@ -133,7 +133,7 @@ void RBTree:: removehelper(Treenode* node){
 	Treenode* childnode;
 }
 
-// inodertraversal recursive function	
+// inodertraversal recursive function
 void RBTree:: inorderhelper(Treenode *root){
 
 if(root==nil){
@@ -164,8 +164,14 @@ return searchhelper(node->left,key);
 }
 }
 void RBTree:: search(int key){
-	searchhelper(root,key);
+	Treenode* tmp=searchhelper(root,key);
+	if(tmp->key==key){
+		cout<<"The value is in the tree"<<endl;
+	}
+	else
+	cout<<"The value is not in the true"<<endl;
 }
+
 int RBTree::minimum(){
 	minimumhelper(root);
 }
@@ -212,19 +218,20 @@ void RBTree:: transplant(Treenode* nance, Treenode *node){
 	node->parent=nance->parent;
 }
 int RBTree::succesor(){
-	Treenode* node;
-	succesorhelper(node);
+	Treenode* root;
+	Treenode* tmp=root->left->right->right;
+	return succesorhelper(root,tmp);
 }
 
 
-int RBTree:: succesorhelper(Treenode *node){
+int RBTree:: succesorhelper(Treenode *root, Treenode *node){
 	cout<<"debug"<<endl;
- 	if(node->right!=nil){
+ 	if(node->right!=NULL){
 		return minimumhelper(node->right);
 	}
 	cout<<"debug two"<<endl;
-	Treenode* tmp =new Treenode;
-	while(tmp!=nil && node==tmp->right){
+	Treenode* tmp =node->parent;
+	while(tmp!=NULL && node==tmp->right){
 		node=tmp;
 		cout<<"debug three"<<endl;
 		tmp=tmp->parent;
@@ -245,7 +252,7 @@ if (right_ptr!=NULL){
 if (node->parent == NULL){
 	root=right_ptr;
 }
-//vice versa 
+//vice versa
 else if(node==node->parent->left){
 	node->parent->left= right_ptr;
 }
@@ -267,7 +274,7 @@ if (node->left!=NULL){
 if (node->parent == NULL){
 	root=left_ptr;
 }
-//vice versa 
+//vice versa
 else if(node==node->parent->left){
 	node->parent->left= left_ptr;
 }
