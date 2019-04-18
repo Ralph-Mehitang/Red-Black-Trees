@@ -1,5 +1,4 @@
 # Red-Black-Trees
-# Hash-Tables
 
 1. My approach to the problem was rather straightforward, I pretty much followed the pseudo algorithms that we discussed in class. 
 

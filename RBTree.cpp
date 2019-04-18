@@ -116,22 +116,53 @@ void ::RBTree:: insert_fix(Treenode* node){
 
 	root->color=black;
 }
-
+/*
 void RBTree:: remove(int val){
-	Treenode* node= new Treenode;
-	node= searchhelper(root,val); // sets node to the value that has been inputed
-	if(node==nil){
-		cout<<"the value you want deleted does not exist"<<endl;
-		return;
-	}
+	Treenode* root;
+	// base case
+	    if (root == NULL) return root;
 
-		//remove(node);
-}
+	    // If the key to be deleted is smaller than the root's key,
+	    // then it lies in left subtree
+	    if (val < root->key)
+	        root->left = remove(root->left, val);
 
-void RBTree:: removehelper(Treenode* node){
-	color_t col;
-	Treenode* childnode;
+	    // If the key to be deleted is greater than the root's key,
+	    // then it lies in right subtree
+	    else if (val > root->key)
+	        root->right = remove(root->right, val);
+
+	    // if key is same as root's key, then This is the node
+	    // to be deleted
+	    else
+	    {
+	        // node with only one child or no child
+	        if (root->left == NULL)
+	        {
+	            struct node *temp = root->right;
+	            free(root);
+	            return temp;
+	        }
+	        else if (root->right == NULL)
+	        {
+	            struct node *temp = root->left;
+	            free(root);
+	            return temp;
+	        }
+
+	        // node with two children: Get the inorder successor (smallest
+	        // in the right subtree)
+	        struct node* temp = minimumhelper(root->right);
+
+	        // Copy the inorder successor's content to this node
+	        root->key = temp->key;
+
+	        // Delete the inorder successor
+	        root->right = remove(root->right, temp->key);
+	    }
+	    return root;
 }
+*/
 
 // inodertraversal recursive function
 void RBTree:: inorderhelper(Treenode *root){
@@ -173,10 +204,20 @@ void RBTree:: search(int key){
 }
 
 int RBTree::minimum(){
-	minimumhelper(root);
+	 inmin(root);
+}
+int RBTree ::inmin(Treenode* node){
+	if(node!=nil)
+	{
+	while(node->left!=nil){
+		node=node->left;
+	}
+return node->key;
 }
 
-int RBTree:: minimumhelper(Treenode* node){
+}
+
+RBTree :: Treenode* RBTree:: minimumhelper(Treenode* node){
 	if(node!=nil)
 	{
 	while(node->left!=nil){
@@ -184,7 +225,7 @@ int RBTree:: minimumhelper(Treenode* node){
 	}
 
 }
-	return node->key;
+	return node;
 
 }
 
@@ -217,27 +258,34 @@ void RBTree:: transplant(Treenode* nance, Treenode *node){
 	}
 	node->parent=nance->parent;
 }
-int RBTree::succesor(){
-	Treenode* root;
-	Treenode* tmp=root->left->right->right;
-	return succesorhelper(root,tmp);
+void RBTree:: succesor(int key){
+Treenode*root=nullptr;
+Treenode*suc=nullptr;
+succesorhelper(root,suc,key);
 }
 
-
-int RBTree:: succesorhelper(Treenode *root, Treenode *node){
-	cout<<"debug"<<endl;
- 	if(node->right!=NULL){
-		return minimumhelper(node->right);
+void RBTree:: succesorhelper(Treenode *root, Treenode*suc, int val){
+//base case
+if(root==NULL){
+exit(-1);
+}
+//if key is present at given root
+if(root->key==val){
+	//minimum value in right subtree is successor
+	if(root->right!=NULL){
+		Treenode *tmp=root->right;
+		while(tmp->left)
+			tmp=tmp->left;
+		suc=tmp;
 	}
-	cout<<"debug two"<<endl;
-	Treenode* tmp =node->parent;
-	while(tmp!=NULL && node==tmp->right){
-		node=tmp;
-		cout<<"debug three"<<endl;
-		tmp=tmp->parent;
-	}
+			return;
+}
+//if key is smaller than the key of the root, move to the left
+if(root->key>val){
+	suc=root;
+	succesorhelper(root->left,suc,val);
+}
 
-	return tmp->key;
 }
 void RBTree:: rotateleft(Treenode* root, Treenode* node){
 
